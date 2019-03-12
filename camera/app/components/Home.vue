@@ -16,7 +16,8 @@
       <Button text="Choose Picture" @tap="selectPicture"/>
       <Button text="Get Current Location" col="1" textWrap="true" @tap="getLocation"/>
       <!-- <text-field v-model="position.longitude"></text-field> -->
-      <text-field v-model="lt"></text-field>
+      <text-field v-model="latitude"></text-field>
+      <text-field v-model="longitude"></text-field>
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
       </WrapLayout>
@@ -75,9 +76,8 @@ export default {
         .then(
           function(loc) {
             if (loc) {
-              that.locations.push(loc);
 							that.latitude = loc.latitude;
-							that.longitude = loc.logitude;
+							that.longitude = loc.longitude;
             }
           },
           function(e) {
