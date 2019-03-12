@@ -1,6 +1,5 @@
 <template>
   <Page>
-    <ActionBar title="Camera Tests FTW!"/>
     <StackLayout>
       <Button text="Take Picture" @tap="takePicture"/>
       <Image :src="img" width="75" height="75"/>
@@ -10,12 +9,10 @@
 
 <template>
   <Page>
-    <ActionBar title="Camera Tests FTW!"/>
+    <ActionBar title="Geoquizz"/>
     <StackLayout>
       <Button text="Take Picture" @tap="takePicture"/>
-      <Button text="Choose Picture" @tap="selectPicture"/>
       <Button text="Get Current Location" col="1" textWrap="true" @tap="getLocation"/>
-      <!-- <text-field v-model="position.longitude"></text-field> -->
       <text-field v-model="latitude"></text-field>
       <text-field v-model="longitude"></text-field>
       <WrapLayout>
@@ -42,29 +39,6 @@ export default {
     };
   },
   methods: {
-    selectPicture() {
-      let context = imagepicker.create({
-        mode: "multiple"
-      });
-
-      context
-        .authorize()
-        .then(function() {
-          return context.present();
-        })
-        .then(selection => {
-          selection.forEach(selected => {
-            console.log(JSON.stringify(selected));
-
-            let img = new Image();
-            img.src = selected;
-            this.images.push(img);
-          });
-        })
-        .catch(function(e) {
-          console.log("error in selectPicture", e);
-        });
-    },
     getLocation() {
       let that = this;
       geolocation
@@ -86,6 +60,7 @@ export default {
         );
     },
     takePicture() {
+      this.getLocation();
       camera
         .requestPermissions()
         .then(() => {
