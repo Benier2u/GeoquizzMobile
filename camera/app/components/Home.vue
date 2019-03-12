@@ -35,6 +35,7 @@ import { Image } from "tns-core-modules/ui/image";
 export default {
   data() {
     return {
+			images:[],
 			latitude:"",
 			longitude:"",
     };
@@ -85,7 +86,6 @@ export default {
         );
     },
     takePicture() {
-      this.getLocation();
       camera
         .requestPermissions()
         .then(() => {
