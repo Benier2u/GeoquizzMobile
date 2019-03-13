@@ -11,8 +11,8 @@
   <Page>
     <ActionBar title="Geoquizz"/>
     <StackLayout>
-      <Button text="Take Picture" @tap="takePicture"/>
-      <Button text="Get Current Location" col="1" textWrap="true" @tap="getLocation"/>
+      <Button class="btn btn-primary btn-rounded-lg" text="Take Picture" @tap="takePicture"/>
+      <Button class = "btn btn-primary btn-rounded-lg" text="Get Current Location " col="1" textWrap="true" @tap="getLocation"/>
       <text-field v-model="latitude"></text-field>
       <text-field v-model="longitude"></text-field>
       <WrapLayout>
@@ -27,20 +27,29 @@ import * as camera from "nativescript-camera";
 import * as imagepicker from "nativescript-imagepicker";
 import * as geolocation from "nativescript-geolocation";
 import { Accuracy } from "tns-core-modules/ui/enums";
-
+import axios from "axios";
 import { Image } from "tns-core-modules/ui/image";
+
 
 export default {
   data() {
     return {
-			images:[],
-			latitude:"",
-			longitude:"",
+      images: [],
+      latitude: "",
+      longitude: ""
     };
   },
   methods: {
     getLocation() {
       let that = this;
+      axios
+        .get("http://192.168.99.100:8080/series/")
+        .then(response => {
+          var posts = response.data.id;
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
       geolocation
         .getCurrentLocation({
           desiredAccuracy: Accuracy.high,
@@ -50,8 +59,8 @@ export default {
         .then(
           function(loc) {
             if (loc) {
-							that.latitude = loc.latitude;
-							that.longitude = loc.longitude;
+              that.latitude = loc.latitude;
+              that.longitude = loc.longitude;
             }
           },
           function(e) {
@@ -84,7 +93,8 @@ export default {
         .catch(e => {
           console.log("Error requesting permission");
         });
-    }
+    },
+    created() {}
   }
 };
 </script>
