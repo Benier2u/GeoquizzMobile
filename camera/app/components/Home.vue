@@ -1,32 +1,32 @@
 <template>
-    <Page>
-        <StackLayout>
-            <Button text="Take Picture" @tap="takePicture"/>
-            <Image :src="img" width="75" height="75"/>
-        </StackLayout>
-    </Page>
+  <Page>
+    <StackLayout>
+      <Button text="Take Picture" @tap="takePicture"/>
+      <Image :src="img" width="75" height="75"/>
+    </StackLayout>
+  </Page>
 </template>
 
 <template>
-    <Page>
-        <ActionBar title="Geoquizz"/>
-        <StackLayout>
-            <Button class="btn btn-primary btn-rounded-lg" text="Take Picture" @tap="takePicture"/>
-            <Button
-                class="btn btn-primary btn-rounded-lg"
-                text="Get Current Location "
-                col="1"
-                textWrap="true"
-                @tap="getLocation"
-            />
-            <text-field v-model="latitude"></text-field>
-            <text-field v-model="longitude"></text-field>
-            <text-field v-model="config"></text-field>
-            <WrapLayout>
-                <Image v-for="img in images" :src="img.src" width="75" height="75"/>
-            </WrapLayout>
-        </StackLayout>
-    </Page>
+  <Page>
+    <ActionBar title="Geoquizz"/>
+    <StackLayout>
+      <Button class="btn btn-primary btn-rounded-lg" text="Take Picture" @tap="takePicture"/>
+      <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Get Current Location "
+        col="1"
+        textWrap="true"
+        @tap="getLocation"
+      />
+      <text-field v-model="latitude"></text-field>
+      <text-field v-model="longitude"></text-field>
+      <text-field v-model="config"></text-field>
+      <WrapLayout>
+        <Image v-for="img in images" :src="img.src" width="75" height="75"/>
+      </WrapLayout>
+    </StackLayout>
+  </Page>
 </template>
 
 <script>
@@ -39,74 +39,96 @@ import axios from "axios";
 import { Image } from "tns-core-modules/ui/image";
 
 export default {
-    data() {
-        return {
-            images: [],
-            latitude: "",
-            longitude: "",
-            config: config.address
-        };
-    },
-    methods: {
-        getLocation() {
-            let that = this;
-            axios
-                .get("http://192.168.99.100:8080/series/")
+  data() {
+    return {
+      images: [],
+      latitude: "",
+      longitude: "",
+      config: config.address
+    };
+  },
+  methods: {
+    getLocation() {
+      let that = this;
+      geolocation
+        .getCurrentLocation({
+          desiredAccuracy: Accuracy.high,
+          maximumAge: 5000,
+          timeout: 10000
+        })
+        .then(
+          function(loc) {
+            if (loc) {
+              that.latitude = loc.latitude;
+              that.longitude = loc.longitude;
+            }
+          },
+          function(e) {
+            console.log("Error: " + (e.message || e));
+          }
+        );
+
+      axios
+        .get(this.config + "series/")
+        .then(response => {
+          var id = response.data[0].id;
+          axios
+            .post(this.config + "series/" + id + "/photos", {
+              description: "lol",
+              position: that.latitude + " " + that.longitude
+            })
+            .then(response => {
+              that.images[0].src = response.data + ".jpg";
+              axios
+                .post(this.config + "/images/upload", {file:that.images[0]}, {
+                  headers: {
+                    "Content-Type": "multipart/form-data"
+                  }
+                })
                 .then(response => {
-                    var posts = response.data.id;
-                    var test;
-                    alert(posts);
+                  alert("fdp");
                 })
                 .catch(e => {
-                    this.errors.push(e);
+                  this.errors.push(e);
                 });
-            geolocation
-                .getCurrentLocation({
-                    desiredAccuracy: Accuracy.high,
-                    maximumAge: 5000,
-                    timeout: 10000
-                })
-                .then(
-                    function(loc) {
-                        if (loc) {
-                            that.latitude = loc.latitude;
-                            that.longitude = loc.longitude;
-                        }
-                    },
-                    function(e) {
-                        console.log("Error: " + (e.message || e));
-                    }
-                );
-        },
-        takePicture() {
-            this.getLocation();
-            camera
-                .requestPermissions()
-                .then(() => {
-                    camera
-                        .takePicture({
-                            width: 300,
-                            height: 300,
-                            keepAspectRatio: true,
-                            saveToGallery: false
-                        })
-                        .then(imageAsset => {
-                            let img = new Image();
-                            img.src = imageAsset;
-                            this.images.push(img);
-                            console.log(
-                                "ive got " + this.images.length + " images now."
-                            );
-                        })
-                        .catch(e => {
-                            console.log("error:", e);
-                        });
-                })
-                .catch(e => {
-                    console.log("Error requesting permission");
-                });
-        },
-        created() {}
+              alert(that.images[0].src);
+            })
+            .catch(e => {
+              this.errors.push(e);
+            });
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
+    },
+
+    takePicture() {
+      var that = this;
+      camera
+        .requestPermissions()
+        .then(() => {
+          camera
+            .takePicture({
+              width: 300,
+              height: 300,
+              keepAspectRatio: true,
+              saveToGallery: false
+            })
+            .then(imageAsset => {
+              let img = new Image();
+              img.src = imageAsset;
+              this.images.push(img);
+              console.log("ive got " + this.images.length + " images now.");
+              that.getLocation();
+            })
+            .catch(e => {
+              console.log("error:", e);
+            });
+        })
+        .catch(e => {
+          console.log("Error requesting permission");
+        });
     }
+  }
 };
 </script>
