@@ -12,6 +12,7 @@
     <ActionBar title="Geoquizz"/>
     <StackLayout>
       <Button class="btn btn-primary btn-rounded-lg" text="Take Picture" @tap="takePicture"/>
+      <button class="btn btn-primary btn-rounded-lg" text="créer une série" @tap="nextPage" />
       <Button
         class="btn btn-primary btn-rounded-lg"
         text="Get Current Location "
@@ -29,6 +30,7 @@
   </Page>
 </template>
 
+
 <script>
 import * as camera from "nativescript-camera";
 import * as imagepicker from "nativescript-imagepicker";
@@ -37,6 +39,20 @@ import { Accuracy } from "tns-core-modules/ui/enums";
 import config from "../../config.json";
 import axios from "axios";
 import { Image } from "tns-core-modules/ui/image";
+import { TNSHttpFormData, TNSHttpFormDataParam, TNSHttpFormDataResponse } from 'nativescript-http-formdata';
+
+const Serie = {
+  template: `
+    <page>
+        <ActionBar title="Geoquizz"/>
+      <StackLayout>
+        <h5>Ville</h5>
+        <text-field v-mondel="ville"></text-field>
+        <button class="btn btn-primary btn-rounded-lg" text="valider" @tap=$navigateBack />
+      </StackLayout>
+  </page>
+  `
+};
 
 export default {
   data() {
@@ -44,7 +60,8 @@ export default {
       images: [],
       latitude: "",
       longitude: "",
-      config: config.address
+      config: config.address,
+      ville:""
     };
   },
   methods: {
@@ -79,19 +96,22 @@ export default {
             })
             .then(response => {
               that.images[0].src = response.data + ".jpg";
+              let formData = new FormData();
+              formData.append('image',that.images[0]);
               axios
-                .post(this.config + "/images/upload", {file:that.images[0]}, {
+                .post(this.config + "images/upload", {
                   headers: {
-                    "Content-Type": "multipart/form-data"
-                  }
+                    "Content-Type" : "multipart/form-data"
+                  },
+                  data: formData
                 })
                 .then(response => {
                   alert("fdp");
                 })
                 .catch(e => {
                   this.errors.push(e);
+                  alert("gros con");
                 });
-              alert(that.images[0].src);
             })
             .catch(e => {
               this.errors.push(e);
@@ -128,6 +148,9 @@ export default {
         .catch(e => {
           console.log("Error requesting permission");
         });
+    },
+    nextPage(){
+      this.$navigateTo(Serie);
     }
   }
 };
