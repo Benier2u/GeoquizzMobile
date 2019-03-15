@@ -49,13 +49,17 @@ const Serie = {
   template: `
     <page>
         <ActionBar title="Geoquizz"/>
-      <StackLayout>
-        <text-field v-mondel="ville"></text-field>
-        <button class="btn btn-primary btn-rounded-lg" text="valider" @tap=$navigateBack />
-        <button class="btn btn-primary btn-rounded-lg" text="creer" @tap="createSerie" />
+      <StackLayout> 
+        <text-field v-model="ville"></text-field>
+        <button  v-bind:isEnabled="this.ville !== ''"class="btn btn-primary btn-rounded-lg" text="creer" @tap="createSerie"/>
       </StackLayout>
   </page>
   `,
+  data() {
+    return {
+      ville: ""
+    };
+  },
   methods: {
     createSerie() {
       let that = this;
@@ -63,7 +67,7 @@ const Serie = {
         .post(
           "http://mobile-geoquizzatelier.pagekite.me/series",
           {
-            ville: "dfghfgh",
+            ville: that.ville,
             map_refs: "48.68 6.16",
             dist: 1
           },
@@ -74,7 +78,7 @@ const Serie = {
           }
         )
         .then(response => {
-          alert(creation);
+          this.$navigateBack();
         })
         .catch(e => {
           alert(e);
@@ -89,8 +93,7 @@ export default {
       images: [],
       latitude: "",
       longitude: "",
-      config: config.address,
-      ville: ""
+      config: config.address
     };
   },
   methods: {
@@ -176,30 +179,6 @@ export default {
         })
         .catch(e => {
           console.log("Error requesting permission");
-        });
-    },
-
-    createSerie() {
-      let that = this;
-      axios
-        .post(
-          this.config + "series",
-          {
-            ville: "dfghfgh",
-            map_refs: "48.68 6.16",
-            dist: 1
-          },
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        )
-        .then(response => {
-          alert(creation);
-        })
-        .catch(e => {
-          alert("error");
         });
     },
 
