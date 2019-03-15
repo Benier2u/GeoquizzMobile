@@ -172,6 +172,10 @@ export default {
         .catch(e => {
           alert("error");
         });
+    },
+
+    nextPage(){
+      this.$navigateTo(Serie);
     }
   }
 };
