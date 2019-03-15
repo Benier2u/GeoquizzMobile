@@ -15,7 +15,7 @@
       <button
         class="btn btn-primary btn-rounded-lg"
         text="créer une série"
-        @tap="$navigateTo(Serie)"
+        @tap="nextPage"
       />
       <Button
         class="btn btn-primary btn-rounded-lg"
@@ -160,6 +160,7 @@ export default {
 
     createSerie() {
       let that = this;
+      alert("test");
       axios
         .post(this.config + "/series", {
           ville: that.ville,
