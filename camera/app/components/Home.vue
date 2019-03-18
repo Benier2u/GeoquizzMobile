@@ -49,7 +49,8 @@ const Serie = {
   template: `
     <page>
         <ActionBar title="Geoquizz"/>
-      <StackLayout> 
+      <StackLayout>
+        <Label class="h2" text=" nom de la ville" style="margin-top:2%"></Label> 
         <text-field v-model="ville"></text-field>
         <button  v-bind:isEnabled="this.ville !== ''"class="btn btn-primary btn-rounded-lg" text="creer" @tap="createSerie"/>
       </StackLayout>
