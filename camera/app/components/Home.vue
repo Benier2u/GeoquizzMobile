@@ -178,8 +178,7 @@ export default {
                                 );
                                 base64image =
                                     "data:image/jpeg;base64," + base64image;
-                                alert(base64image);
-                                formdata.append("file", base64image, "test");
+                                formdata.append("file", base64image);
                                 that.getLocation();
 
                                 let timestamp = (
@@ -202,10 +201,10 @@ export default {
                                 let xhr = new XMLHttpRequest();
                                 xhr.open("POST", upload_url);
                                 xhr.onload = () => {
-                                    console.log(xhr.responseText);
-                                    // callback(JSON.parse(xhr._response)); // this line is the response call back to your request!!!!
-                                    // callback(JSON.parse(xhr.response)); // this line is the response call back to your request!!!!
+                                    let x = JSON.parse(xhr.responseText);
+                                    alert(x.public_id);
                                 };
+                                
                                 formdata.append("timestamp", timestamp);
                                 formdata.append("api_key", api_key);
                                 formdata.append("signature", signature);
