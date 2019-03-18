@@ -82,7 +82,7 @@ const Serie = {
                     "http://mobile-geoquizzatelier.pagekite.me/series",
                     {
                         ville: that.ville,
-                        map_refs: "48.68 6.16",
+                        map_refs: that.longitude+" "+that.latitude,
                         dist: 1
                     },
                     {
@@ -143,22 +143,7 @@ export default {
                             position: that.latitude + " " + that.longitude
                         })
                         .then(response => {
-                            that.images[0].src = response.data + ".jpg";
-                            let formData = new FormData();
-                            formData.append("image", that.images[0]);
-                            axios
-                                .post(this.config + "images/upload", {
-                                    headers: {
-                                        "Content-Type": "multipart/form-data"
-                                    },
-                                    data: formData
-                                })
-                                .then(response => {
-                                    console.log("sa marche");
-                                })
-                                .catch(e => {
-                                    this.errors.push(e);
-                                });
+                            
                         })
                         .catch(e => {
                             this.errors.push(e);
@@ -194,7 +179,6 @@ export default {
                                 );
                                 base64image =
                                     "data:image/jpeg;base64," + base64image;
-                                alert(base64image);
                                 formdata.append("file", base64image);
                                 that.getLocation();
 
@@ -227,7 +211,6 @@ export default {
                                 formdata.append("signature", signature);
                                 xhr.send(formdata);
 
-                                alert("succes");
                             });
                         })
                         .catch(e => {
