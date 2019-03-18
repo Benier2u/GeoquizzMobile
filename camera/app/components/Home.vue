@@ -185,6 +185,7 @@ export default {
                             let img = new Image();
                             img.src = imageAsset;
                             this.images.push(img);
+
                             let formdata = new FormData();
                             let source = new ImageSource();
                             source.fromAsset(imageAsset).then(source => {
@@ -195,7 +196,7 @@ export default {
                                 base64image =
                                     "data:image/jpeg;base64," + base64image;
                                 alert(base64image);
-                                formdata.append("file", base64image);
+                                formdata.append("file", base64image, "test");
                                 that.getLocation();
 
                                 let timestamp = (
