@@ -20,7 +20,7 @@
         textWrap="true"
         @tap="getLocation"
       />
-      <ListPicker :items="s" v-model="index" />
+      <ListPicker :items="s" v-model="index"/>
       <!-- <text-field>{{s[index]}}</text-field> -->
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
@@ -43,6 +43,7 @@ import {
   TNSHttpFormDataParam,
   TNSHttpFormDataResponse
 } from "nativescript-http-formdata";
+import { error } from 'tns-core-modules/trace/trace';
 
 const Serie = {
   template: `
@@ -62,8 +63,8 @@ const Serie = {
   data() {
     return {
       ville: "",
-      longitude:"",
-      latitude:"",
+      longitude: "",
+      latitude: ""
     };
   },
   methods: {
@@ -100,10 +101,11 @@ export default {
       latitude: "",
       longitude: "",
       config: config.address,
-      s:["un","deux","trois"],
-      index:1
+      s: ["un","deux"],
+      index: 1
     };
   },
+
   methods: {
     getLocation() {
       let that = this;
@@ -191,6 +193,19 @@ export default {
 
     nextPage() {
       this.$navigateTo(Serie);
+    },
+
+    created() {
+      let that = this;
+      axios
+      .get(this.config + "series/")
+      .then(response =>{
+        that.s= response.data.nom;
+      })
+      .catch(error =>{
+        alert("fzek");
+      })
+      
     }
   }
 };
