@@ -20,9 +20,8 @@
         textWrap="true"
         @tap="getLocation"
       />
-      <text-field v-model="latitude"></text-field>
-      <text-field v-model="longitude"></text-field>
-      <text-field v-model="config"></text-field>
+      <ListPicker :items="s" v-model="index" />
+      <!-- <text-field>{{s[index]}}</text-field> -->
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
       </WrapLayout>
@@ -52,13 +51,19 @@ const Serie = {
       <StackLayout>
         <Label class="h2" text=" nom de la ville" style="margin-top:2%"></Label> 
         <text-field v-model="ville"></text-field>
+        <Label class="h2" text="longitude" style="margin-top:2%"></Label> 
+        <text-field v-model="longitude"></text-field>
+        <Label class="h2" text="latitude" style="margin-top:2%"></Label> 
+        <text-field v-model="latitude"></text-field>
         <button  v-bind:isEnabled="this.ville !== ''"class="btn btn-primary btn-rounded-lg" text="creer" @tap="createSerie"/>
       </StackLayout>
   </page>
   `,
   data() {
     return {
-      ville: ""
+      ville: "",
+      longitude:"",
+      latitude:"",
     };
   },
   methods: {
@@ -94,7 +99,9 @@ export default {
       images: [],
       latitude: "",
       longitude: "",
-      config: config.address
+      config: config.address,
+      s:["un","deux","trois"],
+      index:1
     };
   },
   methods: {
@@ -139,11 +146,10 @@ export default {
                   data: formData
                 })
                 .then(response => {
-                  alert("fdp");
+                  console.log("sa marche");
                 })
                 .catch(e => {
                   this.errors.push(e);
-                  alert("gros con");
                 });
             })
             .catch(e => {
