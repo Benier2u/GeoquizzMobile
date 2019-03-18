@@ -82,7 +82,7 @@ const Serie = {
                     "http://mobile-geoquizzatelier.pagekite.me/series",
                     {
                         ville: that.ville,
-                        map_refs: that.longitude+" "+that.latitude,
+                        map_refs: that.longitude + " " + that.latitude,
                         dist: 1
                     },
                     {
@@ -142,9 +142,7 @@ export default {
                             description: "lol",
                             position: that.latitude + " " + that.longitude
                         })
-                        .then(response => {
-                            
-                        })
+                        .then(response => {})
                         .catch(e => {
                             this.errors.push(e);
                         });
@@ -180,12 +178,8 @@ export default {
                                 );
                                 base64image =
                                     "data:image/jpeg;base64," + base64image;
-<<<<<<< HEAD
                                 alert(base64image);
                                 formdata.append("file", base64image, "test");
-=======
-                                formdata.append("file", base64image);
->>>>>>> a33fb1909192a0640dd6118396350a47cc427707
                                 that.getLocation();
 
                                 let timestamp = (
@@ -216,7 +210,6 @@ export default {
                                 formdata.append("api_key", api_key);
                                 formdata.append("signature", signature);
                                 xhr.send(formdata);
-
                             });
                         })
                         .catch(e => {
