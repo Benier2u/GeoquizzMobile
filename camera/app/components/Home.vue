@@ -20,7 +20,7 @@
         textWrap="true"
         @tap="getLocation"
       />
-      <ListPicker :items="s" v-model="index"/>
+      <ListPicker :items="s" v-model="index" />
       <!-- <text-field>{{s[index]}}</text-field> -->
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
@@ -218,10 +218,9 @@ export default {
     axios
     .get(this.config+"series")
     .then(response => {
-      response.data.forEach(element => {
-        this.s.$set(0,"test");
-
-      });
+      for(let i =0 ;i<=response.data.length;i++){
+        that.s.push(response.data[i].ville);
+      }
     })
 
   }
