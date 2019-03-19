@@ -20,7 +20,11 @@
         textWrap="true"
         @tap="getLocation"
       />
+<<<<<<< HEAD
       <ListPicker :items="s" v-model="index" />
+=======
+      <ListPicker :items="s" v-model="index" v-if="estCompleteListe"/>
+>>>>>>> 9a54ac1120c1c078d73399e4cb2f8737540ba65f
       <!-- <text-field>{{s[index]}}</text-field> -->
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
@@ -109,7 +113,8 @@ export default {
       longitude: "",
       config: config.address,
       s: [],
-      index: 1
+      index: 0,
+      estCompleteListe: false
     };
   },
   methods: {
@@ -213,14 +218,20 @@ export default {
     }
   },
   created(){
-    let that =  this;
-    alert("fezjf");
     axios
+<<<<<<< HEAD
     .get(this.config+"series")
     .then(response => {
       for(let i =0 ;i<=response.data.length;i++){
         that.s.push(response.data[i].ville);
       }
+=======
+    .get(this.config+"series").then(response => {
+      for(let i = 0; i < response.data.length; i++) {
+        this.s.push(response.data[i].ville)
+      }
+      this.estCompleteListe = true
+>>>>>>> 9a54ac1120c1c078d73399e4cb2f8737540ba65f
     })
 
   }
