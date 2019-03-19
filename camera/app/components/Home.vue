@@ -48,7 +48,7 @@ const Serie = {
   template: `
     <page>
         <ActionBar title="Geoquizz">
-          <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
+          <NavigationButton android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
         </ActionBar>
       <StackLayout>
         <Label class="h2" text=" nom de la ville" style="margin-top:2%"></Label> 
