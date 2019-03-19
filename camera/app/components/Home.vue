@@ -79,7 +79,7 @@ const Serie = {
       let that = this;
       axios
         .post(
-          "http://mobile-geoquizzatelier.pagekite.me/series",
+          "https://mobile-geoquizzatelier.pagekite.me/series",
           {
             ville: that.ville,
             map_refs: that.longitude + " " + that.latitude,
@@ -108,7 +108,7 @@ export default {
       latitude: "",
       longitude: "",
       config: config.address,
-      s: ["un", "deux", "trois"],
+      s: [],
       index: 1
     };
   },
@@ -211,6 +211,19 @@ export default {
     nextPage() {
       this.$navigateTo(Serie);
     }
+  },
+  mounted(){
+    let that =  this;
+    alert("fezjf");
+    axios
+    .get(this.config+"series")
+    .then(response => {
+      response.data.forEach(element => {
+        this.s.$set(0,"test");
+
+      });
+    })
+
   }
 };
 </script>
