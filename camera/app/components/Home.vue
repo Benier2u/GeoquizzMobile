@@ -13,13 +13,6 @@
     <StackLayout>
       <Button class="btn btn-primary btn-rounded-lg" text="Ajouter une photo" @tap="takePicture"/>
       <button class="btn btn-primary btn-rounded-lg" text="créer une série" @tap="nextPage"/>
-      <Button
-        class="btn btn-primary btn-rounded-lg"
-        text="Get Current Location "
-        col="1"
-        textWrap="true"
-        @tap="getLocation"
-      />
       <ListPicker :items="s" v-model="index" v-if="estCompleteListe"/>
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
@@ -54,7 +47,9 @@ import {
 const Serie = {
   template: `
     <page>
-        <ActionBar title="Geoquizz"/>
+        <ActionBar title="Geoquizz">
+          <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
+        </ActionBar>
       <StackLayout>
         <Label class="h2" text=" nom de la ville" style="margin-top:2%"></Label> 
         <text-field v-model="ville"></text-field>
