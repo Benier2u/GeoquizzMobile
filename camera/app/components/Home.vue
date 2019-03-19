@@ -212,7 +212,7 @@ export default {
       this.$navigateTo(Serie);
     }
   },
-  mounted(){
+  created(){
     let that =  this;
     alert("fezjf");
     axios
