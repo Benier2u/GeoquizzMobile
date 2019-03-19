@@ -11,7 +11,7 @@
   <Page>
     <ActionBar title="Geoquizz"/>
     <StackLayout>
-      <Button class="btn btn-primary btn-rounded-lg" text="Take Picture" @tap="takePicture"/>
+      <Button class="btn btn-primary btn-rounded-lg" text="Ajouter une photo" @tap="takePicture"/>
       <button class="btn btn-primary btn-rounded-lg" text="créer une série" @tap="nextPage"/>
       <Button
         class="btn btn-primary btn-rounded-lg"
@@ -20,12 +20,7 @@
         textWrap="true"
         @tap="getLocation"
       />
-<<<<<<< HEAD
-      <ListPicker :items="s" v-model="index" />
-=======
       <ListPicker :items="s" v-model="index" v-if="estCompleteListe"/>
->>>>>>> 9a54ac1120c1c078d73399e4cb2f8737540ba65f
-      <!-- <text-field>{{s[index]}}</text-field> -->
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
       </WrapLayout>
@@ -67,7 +62,7 @@ const Serie = {
         <text-field v-model="longitude"></text-field>
         <Label class="h2" text="latitude" style="margin-top:2%"></Label> 
         <text-field v-model="latitude"></text-field>
-        <button  v-bind:isEnabled="this.ville !== ''"class="btn btn-primary btn-rounded-lg" text="creer" @tap="createSerie"/>
+        <button  v-bind:isEnabled="this.ville !== '' && this.longitude!== '' && this.latitude !== ''"class="btn btn-primary btn-rounded-lg" text="creer" @tap="createSerie"/>
       </StackLayout>
   </page>
   `,
@@ -181,7 +176,7 @@ export default {
                   axios
                     .get(this.config + "series/")
                     .then(response => {
-                      var id = response.data[0].id;
+                      var id = response.data[that.index].id;
                       axios
                         .post(this.config + "series/" + id + "/photos", {
                           description: "lol",
@@ -219,19 +214,12 @@ export default {
   },
   created(){
     axios
-<<<<<<< HEAD
-    .get(this.config+"series")
-    .then(response => {
-      for(let i =0 ;i<=response.data.length;i++){
-        that.s.push(response.data[i].ville);
-      }
-=======
     .get(this.config+"series").then(response => {
       for(let i = 0; i < response.data.length; i++) {
         this.s.push(response.data[i].ville)
       }
-      this.estCompleteListe = true
->>>>>>> 9a54ac1120c1c078d73399e4cb2f8737540ba65f
+      this.estCompleteListe = true;
+      this.s.refresh();
     })
 
   }
