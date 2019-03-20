@@ -16,6 +16,7 @@ nativescript.
 
 
 ### Commandes
+npm install
 ajoute les plateform:
   tns platform add android
   tns platform add ios
