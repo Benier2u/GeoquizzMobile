@@ -6,10 +6,9 @@ Une application mobile qui permet d'ajouter des photos de crée de nouvelle sér
 
 ### Membres du groupe 
 
-  +Richard LEMMER
-  +Hugo BENIER
-  +Alexandre ROBERT
-
+  + LEMMER Richard
+  + BENIER Hugo
+  + ROBERT Alexandre
 
 ### Prérequis
 
