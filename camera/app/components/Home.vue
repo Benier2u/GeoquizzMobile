@@ -176,7 +176,7 @@ export default {
                       var id = response.data[that.index].id;
                       axios
                         .post(this.config + "series/" + id + "/photos", {
-                          description: "lol",
+                          description: "",
                           position: that.latitude + " " + that.longitude,
                           id: x.public_id
                         })
