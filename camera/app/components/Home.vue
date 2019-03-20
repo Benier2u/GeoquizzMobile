@@ -11,9 +11,10 @@
   <Page>
     <ActionBar title="Geoquizz"/>
     <StackLayout>
-      <Button class="btn btn-primary btn-rounded-lg" text="Ajouter une photo" @tap="takePicture"/>
-      <button class="btn btn-primary btn-rounded-lg" text="créer une série" @tap="nextPage"/>
       <ListPicker :items="s" v-model="index" v-if="estCompleteListe"/>
+      <ActivityIndicator v-else color="green" busy="true" style="margin-top : 45%"></ActivityIndicator>
+      <Button  v-if="estCompleteListe" class="btn btn-primary btn-rounded-lg" text="Ajouter une photo" @tap="takePicture"/>
+      <button  v-if="estCompleteListe" class="btn btn-primary btn-rounded-lg" text="créer une série" @tap="nextPage"/>
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
       </WrapLayout>
@@ -144,6 +145,7 @@ export default {
             .then(imageAsset => {
               let img = new Image();
               img.src = imageAsset;
+              console.log(img.src);
               this.images.push(img);
               let formdata = new FormData();
               let source = new ImageSource();
@@ -166,8 +168,7 @@ export default {
                 xhr.open("POST", upload_url);
                 xhr.onload = () => {
                   console.log(xhr.responseText);
-                  // callback(JSON.parse(xhr._response)); // this line is the response call back to your request!!!!
-                  // callback(JSON.parse(xhr.response)); // this line is the response call back to your request!!!!
+                  let x = JSON.parse(xhr.responseText);
                   axios
                     .get(this.config + "series/")
                     .then(response => {
@@ -176,9 +177,10 @@ export default {
                         .post(this.config + "series/" + id + "/photos", {
                           description: "lol",
                           position: that.latitude + " " + that.longitude,
-                          id:x.public_id,
+                          id: x.public_id
                         })
                         .then(response => {})
+
                         .catch(e => {
                           this.errors.push(e);
                         });
@@ -207,16 +209,14 @@ export default {
       this.$navigateTo(Serie);
     }
   },
-  created(){
-    axios
-    .get(this.config+"series").then(response => {
-      for(let i = 0; i < response.data.length; i++) {
-        this.s.push(response.data[i].ville)
+  created() {
+    axios.get(this.config + "series").then(response => {
+      for (let i = 0; i < response.data.length; i++) {
+        this.s.push(response.data[i].ville);
       }
       this.estCompleteListe = true;
       this.s.refresh();
-    })
-
+    });
   }
 };
 </script>
