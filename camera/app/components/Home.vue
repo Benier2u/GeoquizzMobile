@@ -15,7 +15,6 @@
       <ActivityIndicator v-else color="green" busy="true" style="margin-top : 45%"></ActivityIndicator>
       <Button  v-if="estCompleteListe" class="btn btn-primary btn-rounded-lg" text="Ajouter une photo" @tap="takePicture"/>
       <button  v-if="estCompleteListe" class="btn btn-primary btn-rounded-lg" text="créer une série" @tap="nextPage"/>
-      
       <WrapLayout>
         <Image v-for="img in images" :src="img.src" width="75" height="75"/>
       </WrapLayout>
@@ -153,7 +152,6 @@ export default {
               source.fromAsset(imageAsset).then(source => {
                 let base64image = source.toBase64String("jpeg", 60);
                 base64image = "data:image/jpeg;base64," + base64image;
-                alert(base64image);
                 formdata.append("file", base64image);
                 that.getLocation();
 
