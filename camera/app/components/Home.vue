@@ -11,6 +11,7 @@
   <Page>
     <ActionBar title="Geoquizz"/>
     <StackLayout>
+      <Label v-if="estCompleteListe" class="h3" text="Choisissez une série"  style="text-align: center"></Label> 
       <ListPicker :items="s" v-model="index" v-if="estCompleteListe"/>
       <ActivityIndicator v-else color="green" busy="true" style="margin-top : 45%"></ActivityIndicator>
       <Button  v-if="estCompleteListe" class="btn btn-primary btn-rounded-lg" text="Ajouter une photo" @tap="takePicture"/>
